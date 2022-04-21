@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> Math Quiz</title>
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+        <style>
+            body{
+                background-color: black;
+                color: white;
+                text-align: center;
+            }
+            #heading{
+                margin: 20px;
+                padding: 20px;
+                font-size: 72px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            #input{
+                padding: 20px;
+                margin:20px;
+            }
+            #h1{
+                font-size: 50px;
+                margin: 20px;
+                padding: 20px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            #score{
+                margin: 40px;
+                padding: 20px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            #winner{
+                color: green;
+                font-size: 89px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div id="foo"></div>
+
+        <script type="text/babel">
+            function App() {
+
+                const [state, setstate] = React.useState({
+                    num1 : 1,
+                    num2 : 2,
+                    response : "",
+                    score : 0
+                })
+
+                function updateinputbar(event) {
+                    setstate({
+                        ...state,
+                        response : event.target.value
+                    })
+                }
+
+                function check(event){
+                    if(event.key === "Enter"){
+                        const answer = parseInt(state.response)
+                        if(state.num1 + state.num2 === answer){
+                            setstate({
+                                ...state,
+                                num1: Math.ceil(Math.random() * 50),
+                                num2: Math.ceil(Math.random() * 50),
+                                response: "",
+                                score : state.score + 1,
+                            })
+                        } else {
+                            setstate({
+                                ...state,
+                                response : "",
+                                score : state.score - 1
+                            })
+                        }
+                    }
+                }
+               
+                if(state.score === 10 ){
+                    return(
+                        <div id="winner"> <h1>You Won Congratulations!!</h1> </div>
+                    )
+                }
+
+                return(
+                    <div>
+                        <h1 id="heading"> {state.num1} + {state.num2} </h1>
+                        <input id="input" autoFocus="true"  onKeyPress={check} onChange={updateinputbar} value={state.response}/>
+                        <h1 id="h1">Press Enter</h1>
+                        <h2 id="score"> Score : {state.score}</h2>
+                    </div>
+                );
+            }
+            ReactDOM.render(<App />, document.querySelector("#foo"));
+        </script>
+    </body>
+</html>
